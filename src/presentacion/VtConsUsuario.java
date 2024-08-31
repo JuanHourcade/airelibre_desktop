@@ -171,7 +171,8 @@ public class VtConsUsuario extends JInternalFrame{
 		textNicknameConsulta.setBounds(238, 21, 96, 19);
 		getContentPane().add(textNicknameConsulta);
 		
-		//EVENTOS
+		//EVENTOS ========================================================================
+		
 		addComponentListener(new ComponentAdapter() {
 			public void componentShown(ComponentEvent e) {
 				Vector<String> vUsuarios = null;

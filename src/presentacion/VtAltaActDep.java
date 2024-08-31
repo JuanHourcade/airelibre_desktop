@@ -117,29 +117,15 @@ public class VtAltaActDep extends JInternalFrame {
 		getContentPane().add(textFecha);
 
 		JButton btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					confirmarAltaUsuario();
-				} catch (PersistenciaException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		
 		btnConfirmar.setBounds(33, 223, 105, 21);
 		this.getContentPane().add(btnConfirmar);
 
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				yo.dispose();
-			}
-		});
 		btnCancelar.setBounds(158, 223, 105, 21);
 		this.getContentPane().add(btnCancelar);
 
+		//EVENTOS ========================================================================
+		
 		addComponentListener(new ComponentAdapter() {
 			public void componentShown(ComponentEvent e) {
 				EntityManagerFactory emf = Persistence.createEntityManagerFactory("airelibre_desk");
@@ -159,6 +145,24 @@ public class VtAltaActDep extends JInternalFrame {
 				}
 			}
 		});
+
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				yo.dispose();
+			}
+		});
+
+		btnConfirmar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					confirmarAltaUsuario();
+				} catch (PersistenciaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 	}
 	
 	private void confirmarAltaUsuario() throws PersistenciaException{

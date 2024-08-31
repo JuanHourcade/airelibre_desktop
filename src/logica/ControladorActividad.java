@@ -35,6 +35,10 @@ public class ControladorActividad implements IControladorActividad {
 	public Actividad obtenerActividad(String nom) {
 		return m.obtenerActividad(nom);
 	}
+	
+	public Vector<String> obtenerVectorClasesActividad(String nom){
+		return m.obtenerVectorClasesActividad(nom);
+	}
 
 
 	//AltaActividad

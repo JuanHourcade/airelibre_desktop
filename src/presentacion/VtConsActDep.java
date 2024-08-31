@@ -179,35 +179,10 @@ public class VtConsActDep extends JInternalFrame{
 		getContentPane().add(lblInscriptos);
 		
 		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Verificar si la actividad existe
-				if(iControladorActividad.actividadExiste(textNombre.getText())) {
-					//Traer objeto actividad
-					Actividad act = iControladorActividad.obtenerActividad(textNombre.getText());
-					//Mostrar la info en los campos de texto
-					textDescripcion.setText(act.getDescripcion());
-					textDuracion.setText(String.valueOf(act.getDuracionHoras()));
-					textCosto.setText(String.valueOf(act.getCosto()));
-					textLugar.setText(act.getLugar());
-					textFechaAlta.setText(act.getFechaAlta().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
-					textEstado.setText(act.getEstado());
-				} else {
-					JOptionPane.showMessageDialog(new JPanel(), "La actividad " + textNombre.getText() + " no existe");
-				}
-			}
-		});
 		btnBuscar.setBounds(361, 25, 78, 23);
 		getContentPane().add(btnBuscar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Cerrar el fame
-				yo.dispose();
-			}
-		});
-		
 		btnCancelar.setBounds(249, 290, 190, 21);
 		btnCancelar.setVisible(true);
 		this.getContentPane().add(btnCancelar);
@@ -221,14 +196,10 @@ public class VtConsActDep extends JInternalFrame{
 		getContentPane().add(listClases);
 		
 		listActividades = new JList<String>();
-		listActividades.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textNombre.setText(listActividades.getSelectedValue());
-			}
-		});
 		listActividades.setBounds(10, 11, 157, 318);
 		getContentPane().add(listActividades);
+		
+		//EVENTOS ========================================================================
 		
 	    addComponentListener ( new ComponentAdapter () {
 	        public void componentShown ( ComponentEvent e ) {
@@ -236,6 +207,42 @@ public class VtConsActDep extends JInternalFrame{
 	            cargarListaActividades();
 	        }
 	    });
+
+		listActividades.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				textNombre.setText(listActividades.getSelectedValue());
+			}
+		});
+
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Cerrar el fame
+				yo.dispose();
+			}
+		});
+
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Verificar si la actividad existe
+				if(iControladorActividad.actividadExiste(textNombre.getText())) {
+					//Traer objeto actividad
+					Actividad act = iControladorActividad.obtenerActividad(textNombre.getText());
+					//Mostrar la info en los campos de texto
+					textDescripcion.setText(act.getDescripcion());
+					textDuracion.setText(String.valueOf(act.getDuracionHoras()));
+					textCosto.setText(String.valueOf(act.getCosto()));
+					textLugar.setText(act.getLugar());
+					textFechaAlta.setText(act.getFechaAlta().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
+					textEstado.setText(act.getEstado());
+					//Cargar datos en la lista de clases
+					listClases.removeAll();
+					listClases.setListData(iControladorActividad.obtenerVectorClasesActividad(textNombre.getText()));
+				} else {
+					JOptionPane.showMessageDialog(new JPanel(), "La actividad " + textNombre.getText() + " no existe");
+				}
+			}
+		});
 	}
 
 	private void cargarListaActividades() {

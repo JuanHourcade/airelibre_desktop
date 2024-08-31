@@ -7,10 +7,13 @@ import java.util.Vector;
 import excepciones.*;
 import jakarta.persistence.*;
 import modelo.Actividad;
+import modelo.ClaseDeportiva;
 import modelo.Deportista;
 import modelo.Entrenador;
 
 public class ManejarPersistenia {
+	
+	// USUARIO ========================================================================
 	
 	public void persistirEntrenador(Entrenador ent) throws PersistenciaException {
 		
@@ -198,6 +201,8 @@ public class ManejarPersistenia {
 		return ret;
 	}
 	
+	//ACTIVIDAD ========================================================================
+	
 	public boolean actividadExiste(String nombre){
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("airelibre_desk");
 		EntityManager em = emf.createEntityManager();
@@ -266,6 +271,46 @@ public class ManejarPersistenia {
 	        int ID = (int) buscarId.getSingleResult();
 	        ret = em.find(Actividad.class, ID);
 		} finally {
+			em.close();
+			emf.close();
+		}
+		return ret;
+	}
+	
+	public Vector<String> obtenerVectorClasesActividad(String nom){
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("airelibre_desk");
+		EntityManager em = emf.createEntityManager();
+		Vector<String> vClases = new Vector<String>();
+		
+		try {
+			Query buscarId = em.createNativeQuery("SELECT ID FROM ACTIVIDAD WHERE NOMBRE = ?");
+			buscarId.setParameter(1, nom);
+			int id = (int) buscarId.getSingleResult();
+			Query buscarClase = em.createNativeQuery("SELECT NOMBRE FROM CLASEDEPORTIVA WHERE ID_ACTIVIDAD = ?");
+			buscarClase.setParameter(1, id);
+			List<String> clases = buscarClase.getResultList();
+			for (String cl : clases) {
+				vClases.add(cl);
+			}
+		}finally {
+			em.close();
+			emf.close();
+		}
+		return vClases;
+	}
+	
+	//CLASES ========================================================================
+	
+	public ClaseDeportiva obtenerClase(String nom) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("airelibre_desk");
+		EntityManager em = emf.createEntityManager();
+		ClaseDeportiva ret = null;
+		try {
+			Query buscarId = em.createNativeQuery("SELECT ID FROM CLASEDEPORTIVA WHERE NOMBRE = ?");
+			buscarId.setParameter(1, nom);
+			int id = (int) buscarId.getSingleResult();
+			ret = em.find(ClaseDeportiva.class, id);
+		}finally {
 			em.close();
 			emf.close();
 		}

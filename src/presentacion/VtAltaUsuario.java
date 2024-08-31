@@ -137,20 +137,49 @@ public class VtAltaUsuario extends JInternalFrame{
 		panelEntrenador.add(textWeb);
 
 		rdbtnDeportista = new JRadioButton("Deportista");
-		rdbtnDeportista.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (rdbtnDeportista.isSelected()) {
-					chckbxEsProfesioanl.setEnabled(true);
-				} else {
-					chckbxEsProfesioanl.setEnabled(false);
-				}
-			}
-		});
 		rdbtnDeportista.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnDeportista.setBounds(253, 14, 233, 21);
 		this.getContentPane().add(rdbtnDeportista);
 
 		rdbtnEntrenador = new JRadioButton("Entrenador");
+		rdbtnEntrenador.setHorizontalAlignment(SwingConstants.LEFT);
+		rdbtnEntrenador.setBounds(253, 82, 233, 21);
+		this.getContentPane().add(rdbtnEntrenador);
+
+		//Grupo de botones para que solo se seleccione uno
+		ButtonGroup rdbtnGroup = new ButtonGroup();
+		rdbtnGroup.add(rdbtnEntrenador);
+		rdbtnGroup.add(rdbtnDeportista);
+
+		JButton btnConfirmar = new JButton("Confirmar");
+		btnConfirmar.setBounds(278, 195, 105, 21);
+		this.getContentPane().add(btnConfirmar);
+
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(393, 195, 105, 21);
+		this.getContentPane().add(btnCancelar);
+		btnConfirmar.setVisible(true);
+		btnCancelar.setVisible(true);
+		
+		//EVENTOS ========================================================================
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				yo.dispose();
+			}
+		});
+		
+		btnConfirmar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					confirmarAltaUsuario();
+				} catch (PersistenciaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+
 		rdbtnEntrenador.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (rdbtnEntrenador.isSelected()) {
@@ -167,42 +196,18 @@ public class VtAltaUsuario extends JInternalFrame{
 				}
 			}
 		});
-		rdbtnEntrenador.setHorizontalAlignment(SwingConstants.LEFT);
-		rdbtnEntrenador.setBounds(253, 82, 233, 21);
-		this.getContentPane().add(rdbtnEntrenador);
 
-		//Grupo de botones para que solo se seleccione uno
-		ButtonGroup rdbtnGroup = new ButtonGroup();
-		rdbtnGroup.add(rdbtnEntrenador);
-		rdbtnGroup.add(rdbtnDeportista);
-
-		JButton btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					confirmarAltaUsuario();
-				} catch (PersistenciaException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+		rdbtnDeportista.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (rdbtnDeportista.isSelected()) {
+					chckbxEsProfesioanl.setEnabled(true);
+				} else {
+					chckbxEsProfesioanl.setEnabled(false);
 				}
 			}
 		});
-		btnConfirmar.setBounds(278, 195, 105, 21);
-		this.getContentPane().add(btnConfirmar);
-
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				yo.dispose();
-			}
-		});
-		btnCancelar.setBounds(393, 195, 105, 21);
-		this.getContentPane().add(btnCancelar);
-		btnConfirmar.setVisible(true);
-		btnCancelar.setVisible(true);
+		
 	}
-
-
 
 	private void confirmarAltaUsuario() throws PersistenciaException{
 		
@@ -269,7 +274,5 @@ public class VtAltaUsuario extends JInternalFrame{
 		yo.dispose();
 
 	}
-
-
 
 }
