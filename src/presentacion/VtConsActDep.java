@@ -259,6 +259,7 @@ public class VtConsActDep extends JInternalFrame{
 				// ...
 			}
 		});
+		
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Cerrar el fame

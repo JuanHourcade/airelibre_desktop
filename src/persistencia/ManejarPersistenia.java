@@ -299,6 +299,22 @@ public class ManejarPersistenia {
 		return vClases;
 	}
 	
+	public String[][] obtenerArrRankingActividades(){
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("airelibre_desk");
+		EntityManager em = emf.createEntityManager();
+		String[][] data = null;
+		try {
+			Query cantActividades = em.createNativeQuery("SELECT COUNT(*) FROM ACTIVIDAD");
+			int cant = (int) cantActividades.getSingleResult();
+			data = new String[cant][2];
+			//Buscar las actividades y la cantidad de clases ordenadas e insertarlas al Strinh[][]
+		}finally {
+			em.close();
+			emf.close();
+		}
+		return data;
+	}
+	
 	//CLASES ========================================================================
 	
 	public ClaseDeportiva obtenerClase(String nom) {
