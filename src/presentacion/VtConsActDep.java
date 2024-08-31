@@ -9,7 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import logica.IControladorActividad;
+import logica.IControladorClaseDeportiva;
 import modelo.Actividad;
+import modelo.ClaseDeportiva;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -19,6 +21,8 @@ import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class VtConsActDep extends JInternalFrame{
 	private JTextField textNombre;
@@ -37,12 +41,14 @@ public class VtConsActDep extends JInternalFrame{
 	private JList<String> listClases;
 	private JList<String> listActividades;
 	private IControladorActividad iControladorActividad;
+	private IControladorClaseDeportiva iControladorClase;
 	private VtPrincipal principal;
 	private JInternalFrame yo = this;
 	
-	public VtConsActDep(IControladorActividad i, VtPrincipal VtPrincipal) {
+	public VtConsActDep(IControladorActividad ia, IControladorClaseDeportiva ic, VtPrincipal VtPrincipal) {
 		principal = VtPrincipal;
-		iControladorActividad = i;
+		iControladorActividad = ia;
+		iControladorClase = ic;
 		principal.bajarFrameActual();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setTitle("Consulta Actividad");
@@ -211,17 +217,11 @@ public class VtConsActDep extends JInternalFrame{
 		listActividades.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				//Coloca el nombre de la clase seleccionada en el textBox para buscar
 				textNombre.setText(listActividades.getSelectedValue());
 			}
 		});
-
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Cerrar el fame
-				yo.dispose();
-			}
-		});
-
+		
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Verificar si la actividad existe
@@ -241,6 +241,28 @@ public class VtConsActDep extends JInternalFrame{
 				} else {
 					JOptionPane.showMessageDialog(new JPanel(), "La actividad " + textNombre.getText() + " no existe");
 				}
+			}
+		});
+
+		listClases.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				//Obtiene obj de la clase seleccionada
+				ClaseDeportiva cla = iControladorClase.obtenerClase(listClases.getSelectedValue());
+				//Completa los campos con los datos del obj
+				textNombreClase.setText(cla.getNombre());
+				textFechaClase.setText(cla.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
+				textHoraClase.setText(cla.getHora().toString());
+				textLugarClase.setText(cla.getLugar());
+				textFechaAltaClase.setText(cla.getFechaAlta().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString());
+				//Completa la lista con todas las inscripciones a la clase
+				// ...
+			}
+		});
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Cerrar el fame
+				yo.dispose();
 			}
 		});
 	}

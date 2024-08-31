@@ -5,10 +5,13 @@ import java.time.*;
 import datatype.DtClaseDeportiva;
 import datatype.DtInscripcion;
 import excepciones.ClaseRepetidoException;
+import modelo.ClaseDeportiva;
 import excepciones.ClaseNoExisteException;
 import excepciones.ActividadNoExisteException;
 
 public interface IControladorClaseDeportiva {
+	
+	public abstract ClaseDeportiva obtenerClase(String nom);
 	
 	/**
      * Registra la Clase Deportiva en el sistema.
